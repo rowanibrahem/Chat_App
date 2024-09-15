@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UpdatesStateTitle extends StatelessWidget {
-  const UpdatesStateTitle({
+class GreyTitleWithPadding extends StatelessWidget {
+  const GreyTitleWithPadding({
     super.key,
     required this.title,
   });
