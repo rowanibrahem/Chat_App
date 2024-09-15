@@ -1,6 +1,7 @@
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_body.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_bottom_nav_bar.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_view_appbar.dart';
+import 'package:chatapp_mentor/features/status/presentation/views/status_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -13,8 +14,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int selectedIndex = 0;
   final List<Widget> pages = [
-    const ChatPage(),
-    const SizedBox(),
+    const ChatView(),
+    const StatusView(),
     const SizedBox(),
   ];
   @override
