@@ -20,15 +20,12 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.chatapp_mentor"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-    }
+    applicationId = "com.example.chatapp_mentor"
+    minSdkVersion 21 // You can update this as per your app's requirement
+    targetSdkVersion 33 // Update this according to the latest SDK version you're using
+    versionCode 1 // Set the version code
+    versionName "1.0.0" // Set the version name
+}
 
     buildTypes {
         release {
