@@ -12,11 +12,16 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int selectedIndex = 0;
+  final List<Widget> pages = [
+    const ChatPage(),
+    const SizedBox(),
+    const SizedBox(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeViewAppbar(),
-     bottomNavigationBar: HomeBottomNavBar(
+      bottomNavigationBar: HomeBottomNavBar(
         currentIndex: selectedIndex,
         onTap: (int index) {
           setState(() {
@@ -24,7 +29,9 @@ class _HomeViewState extends State<HomeView> {
           });
         },
       ),
-     body: const SafeArea(child: HomeBody()),
+      body: SafeArea(
+        child: pages[selectedIndex],
+      ),
     );
   }
 }

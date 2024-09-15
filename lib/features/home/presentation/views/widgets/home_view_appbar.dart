@@ -9,6 +9,12 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(
+          color: Colors.grey,
+          width: 0.5,
+        ),
+      ),
       title: const Text(
         'WhatsUp',
         style: TextStyle(
@@ -69,8 +75,7 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-  
 
-   @override
+  @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
