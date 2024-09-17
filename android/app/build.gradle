@@ -23,22 +23,42 @@ android {
     }
 
     defaultConfig {
-    applicationId = "com.example.chatapp_mentor"
-    minSdkVersion 21 // You can update this as per your app's requirement
-    targetSdkVersion 33 // Update this according to the latest SDK version you're using
-    versionCode 1 // Set the version code
-    versionName "1.0.0" // Set the version name
-}
+        applicationId = "com.example.chatapp_mentor"
+        minSdkVersion 21 // You can update this as per your app's requirement
+        targetSdkVersion 33 // Update this according to the latest SDK version you're using
+        versionCode 1 // Set the version code
+        versionName "1.0.0" // Set the version name
+    }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+        }
+    }
+
+    configurations {
+        all {
+            resolutionStrategy {
+                // Force specific Kotlin versions to avoid duplicate classes
+                force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+            }
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Ensure all your required dependencies are here.
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
+
+    // Add Firebase and other relevant dependencies, for example:
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Remove any unnecessary dependencies.
 }
