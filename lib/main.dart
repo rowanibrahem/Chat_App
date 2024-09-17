@@ -1,5 +1,4 @@
 import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
-import 'package:chatapp_mentor/features/splash_screen/presentation/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

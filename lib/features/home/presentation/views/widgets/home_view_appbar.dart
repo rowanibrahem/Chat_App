@@ -1,3 +1,5 @@
+import 'package:chatapp_mentor/features/home/presentation/views/new_group_view.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/profile_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -48,9 +50,14 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
           itemBuilder: (BuildContext context) {
             return [
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'New Group',
-                child: Text('New Group',
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const NewGroupView(),
+                  ));
+                },
+                child: const Text('New Group',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               const PopupMenuItem<String>(
@@ -58,15 +65,15 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text('Starred Messages',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'Profile',
-                child: Text('Profile',
+                child: const Text('Profile',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Settings',
-                child: Text('Settings',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfileView(),
+                  ));
+                },
               ),
             ];
           },
