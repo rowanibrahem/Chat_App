@@ -60,11 +60,6 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
                 child: const Text('New Group',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
-              const PopupMenuItem<String>(
-                value: 'Starred Messages',
-                child: Text('Starred Messages',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
               PopupMenuItem<String>(
                 value: 'Profile',
                 child: const Text('Profile',
