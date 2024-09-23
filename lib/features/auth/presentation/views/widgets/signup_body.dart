@@ -141,7 +141,7 @@ class _SignupBodyState extends State<SignupBody> {
                  CustomButton(
                   text: 'Sign Up', 
                   func: (){
-                  if (nameController.text.length < 4) {
+                  if (nameController.text.length < 5) {
                       displayToastMssg(
                           'name must be at least 4 characters', context);
                     } else if (!emailController.text.contains('@')) {
