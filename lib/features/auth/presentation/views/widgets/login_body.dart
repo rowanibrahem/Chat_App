@@ -95,7 +95,7 @@ class _LoginBodyState extends State<LoginBody> {
                   isObscure: !isPasswordVisible,
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 30.0,
                 ),
                  CustomButton(
                   text: 'Log In', 
