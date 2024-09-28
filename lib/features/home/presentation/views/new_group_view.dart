@@ -1,3 +1,4 @@
+import 'package:chatapp_mentor/core/Routing/routes.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/new_group_app_bar.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/new_group_second_step.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/positioned_next_arrow.dart';
@@ -35,11 +36,10 @@ class NewGroupView extends StatelessWidget {
           ),
           PositionedNextArrow(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const NewGroupSecondStep(),
-                  ));
+                 Routes.newGroupSecondStepScreen,
+                 );
             },
           ),
         ],

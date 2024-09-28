@@ -1,3 +1,4 @@
+import 'package:chatapp_mentor/core/Routing/routes.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/new_group_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/profile_view.dart';
 import 'package:flutter/foundation.dart';
@@ -53,9 +54,9 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
               PopupMenuItem<String>(
                 value: 'New Group',
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const NewGroupView(),
-                  ));
+                  Navigator.of(context).pushNamed(
+                    Routes.newGroupScreen,
+                  );
                 },
                 child: const Text('New Group',
                     style: TextStyle(fontWeight: FontWeight.bold)),
@@ -65,9 +66,9 @@ class HomeViewAppbar extends StatelessWidget implements PreferredSizeWidget {
                 child: const Text('Profile',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProfileView(),
-                  ));
+                  Navigator.of(context).pushNamed(
+                    Routes.profileScreen,
+                  );
                 },
               ),
             ];

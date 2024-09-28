@@ -1,8 +1,8 @@
+import 'package:chatapp_mentor/core/Routing/routes.dart';
 import 'package:chatapp_mentor/features/auth/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp_mentor/core/constants/asset_images.dart';
 import 'package:chatapp_mentor/core/themes/styles.dart';
-
 
 class SplashBody extends StatefulWidget {
   const SplashBody({super.key});
@@ -16,13 +16,11 @@ class SplashBodyState extends State<SplashBody> {
   void initState() {
     super.initState();
 
-   Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) { 
-        Navigator.pushReplacement(
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LoginView(), 
-          ),
+          Routes.loginScreen,
         );
       }
     });
@@ -36,7 +34,7 @@ class SplashBodyState extends State<SplashBody> {
         children: [
           Image.asset(
             AssetImages.logo,
-            ),
+          ),
           Text(
             'Welcome Chat App',
             style: Styles.textStyle24,

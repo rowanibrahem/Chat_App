@@ -1,11 +1,13 @@
 import 'dart:developer';
-import 'package:chatapp_mentor/features/splash_screen/presentation/views/splash_view.dart';
+import 'package:chatapp_mentor/core/DI/dependency_injection.dart';
+import 'package:chatapp_mentor/core/Routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  setupGetIt();
   await Firebase.initializeApp();
    FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
@@ -29,7 +31,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
-      home: const SplashView(),
+      
+        onGenerateRoute: AppRouter().generateRoute,
     );
   }
 }

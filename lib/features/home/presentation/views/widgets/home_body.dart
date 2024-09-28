@@ -1,3 +1,7 @@
+import 'package:chatapp_mentor/core/shared_widgets/no_image_circle_avatar.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/chat_view.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_chat_shimmer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatView extends StatelessWidget {
@@ -5,65 +9,103 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      ListView.builder(
-        itemCount: 100,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return const ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage('assets/images/marwan.jpg'),
-            ),
-            title: Text('Marwan Ali',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Row(
-              children: [
-                Icon(Icons.done_all, color: Colors.blueGrey, size: 20),
-                SizedBox(width: 5),
-                Text(
-                  'This is the last message',
-                  style: TextStyle(color: Colors.blueGrey),
-                  overflow: TextOverflow.ellipsis,
-                )
-              ],
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text('12:00 PM'),
-                SizedBox(height: 5),
-                Expanded(
-                  child: CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Colors.green,
-                    child: Center(
-                      child: Text(
-                        '2',
-                        maxLines: 1,
-                        style: TextStyle(color: Colors.white, fontSize: 12),
+    return Stack(
+      children: [
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const HomeChatShimmer();
+            }
+
+            if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong'));
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No users found'));
+            }
+
+            var users = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: users.length,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                var user = users[index].data() as Map<String, dynamic>;
+                String name = user['name'] ?? 'No name';
+                String phone = user['phone'] ?? 'No phone';
+                String email = user['email'] ?? 'No email';
+
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ConversationView(
+                          email: email,
+                          name: name,
+                          phone: phone,
+                        ),
                       ),
+                    );
+                  },
+                  child: ListTile(
+                    leading: const NoImageCircleAvatar(),
+                    title: Text(name,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Row(
+                      children: [
+                        const Icon(Icons.numbers,
+                            color: Colors.blueGrey, size: 20),
+                        const SizedBox(width: 5),
+                        Text(
+                          phone,
+                          style: const TextStyle(color: Colors.blueGrey),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    trailing: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('12:00 PM'),
+                        SizedBox(height: 5),
+                        Expanded(
+                          child: CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.green,
+                            child: Center(
+                              child: Text(
+                                '2',
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
+                );
+              },
+            );
+          },
+        ),
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: Colors.green,
+            child: const Icon(
+              Icons.message,
+              color: Colors.white,
             ),
-          );
-        },
-      ),
-      Positioned(
-        bottom: 20,
-        right: 20,
-        child: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.green,
-          child: const Icon(
-            Icons.message,
-            color: Colors.white,
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
