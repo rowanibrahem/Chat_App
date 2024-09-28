@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_state.dart';
 
+late String currentEmail;
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
   AuthCubit(this._authRepository) : super(AuthInitialState());
@@ -31,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
         'phone': phone,
         'email': email,
       });
-
+      await getCurrentUserData();
       emit(RegisterSuccessState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -50,6 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoginLoadingState());
     try {
       await _authRepository.loginUser(email: email, password: password);
+      await getCurrentUserData();
       emit(LoginSuccessState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -68,11 +70,24 @@ class AuthCubit extends Cubit<AuthState> {
     } on Exception catch (e) {
       emit(LoginFailureState(errorMessage: 'Something went wrong: $e'));
     }
+
+    @override
+    void onChange(Change<AuthState> change) {
+      super.onChange(change);
+      log('Change: $change');
+    }
   }
 
-  @override
-  void onChange(Change<AuthState> change) {
-    super.onChange(change);
-    log('Change: $change');
+  Future<void> getCurrentUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      currentEmail = user.email??'No Email';
+      log(user.email.toString());
+      log(userData.data().toString());
+    }
   }
 }

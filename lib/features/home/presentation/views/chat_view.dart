@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ConversationView extends StatefulWidget {
   const ConversationView({
@@ -7,9 +6,10 @@ class ConversationView extends StatefulWidget {
     required this.email,
     required this.name,
     required this.phone,
+    required this.chatId,
   });
 
-  final String email, name, phone;
+  final String email, name, phone, chatId;
 
   @override
   State<ConversationView> createState() => _ConversationViewState();
@@ -54,19 +54,21 @@ class _ConversationViewState extends State<ConversationView> {
         children: [
           Expanded(
             child: ListView.builder(
-              reverse: true, // عكس ترتيب الرسائل بحيث تظهر الرسائل الجديدة في الأسفل
+              reverse:
+                  true, // عكس ترتيب الرسائل بحيث تظهر الرسائل الجديدة في الأسفل
               padding: const EdgeInsets.symmetric(vertical: 10),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
-                final isSender = message['sender'] == 'me'; // التحقق إذا كانت الرسالة مرسلة من المستخدم
+                final isSender = message['sender'] ==
+                    'me'; // التحقق إذا كانت الرسالة مرسلة من المستخدم
 
                 return Align(
                   alignment:
                       isSender ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 5, horizontal: 10),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: isSender
