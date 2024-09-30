@@ -1,4 +1,10 @@
+import 'package:chatapp_mentor/features/home/data/model/message_model.dart';
+import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_cubit.dart';
+import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_state.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/chat_view_appbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ConversationView extends StatefulWidget {
   const ConversationView({
@@ -17,84 +23,116 @@ class ConversationView extends StatefulWidget {
 
 class _ConversationViewState extends State<ConversationView> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, String>> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ChatCubit>().loadMessages(widget.chatId);
+  }
+
+  String _formatTimestamp(DateTime dateTime) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final messageDay = DateTime(dateTime.year, dateTime.month, dateTime.day);
+
+    if (messageDay == today) {
+      return DateFormat('hh:mm a').format(dateTime);
+    } else if (messageDay == today.subtract(const Duration(days: 1))) {
+      return 'Yesterday, ${DateFormat('hh:mm a').format(dateTime)}';
+    } else {
+      return DateFormat('MMM d, hh:mm a').format(dateTime);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0.0,
-        title: Row(
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.person, color: Colors.white),
-            ),
-            const SizedBox(width: 10),
-            Text(widget.name),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.call),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.videocam),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: ChatViewAppbar(widget: widget),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              reverse:
-                  true, // عكس ترتيب الرسائل بحيث تظهر الرسائل الجديدة في الأسفل
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                final isSender = message['sender'] ==
-                    'me'; // التحقق إذا كانت الرسالة مرسلة من المستخدم
-
-                return Align(
-                  alignment:
-                      isSender ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isSender
-                          ? Colors.green[100]
-                          : Colors.grey[200], // لون الرسالة بناءً على المرسل
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(12),
-                        topRight: const Radius.circular(12),
-                        bottomLeft: isSender
-                            ? const Radius.circular(12)
-                            : const Radius.circular(0),
-                        bottomRight: isSender
-                            ? const Radius.circular(0)
-                            : const Radius.circular(12),
-                      ),
-                    ),
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                if (state is LoadMessagesLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is LoadMessagesSuccess) {
+                  return ListView.builder(
+                    reverse: true,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) {
+                      final message = state.messages[index];
+                      final isSender = message.sender == widget.email;
+                      return Align(
+                        alignment: isSender
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: isSender
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: isSender
+                                    ? Colors.green[100]
+                                    : Colors.grey[200],
+                                borderRadius: BorderRadius.only(
+                                  topLeft: const Radius.circular(12),
+                                  topRight: const Radius.circular(12),
+                                  bottomLeft: isSender
+                                      ? const Radius.circular(12)
+                                      : const Radius.circular(0),
+                                  bottomRight: isSender
+                                      ? const Radius.circular(0)
+                                      : const Radius.circular(12),
+                                ),
+                              ),
+                              child: Text(
+                                message.content,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: isSender
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _formatTimestamp(message.createdAt),
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.grey),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else if (state is LoadMessagesError) {
+                  return Center(
                     child: Text(
-                      message['text']!,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                );
+                        'Error occured while fetching messages: ${state.errorMessage}'),
+                  );
+                } else if (state is SendMessageLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is SendMessageError) {
+                  return Center(
+                    child: Text(
+                        'Error occured while sending message: ${state.errorMessage}'),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
               },
             ),
           ),
-          _buildMessageInput(), // حقل إدخال الرسائل
+          _buildMessageInput(),
         ],
       ),
     );
@@ -124,23 +162,18 @@ class _ConversationViewState extends State<ConversationView> {
             backgroundColor: Colors.green,
             child: IconButton(
               icon: const Icon(Icons.send, color: Colors.white),
-              onPressed: _sendMessage,
+              onPressed: () {
+                context.read<ChatCubit>().sendMessage(
+                      widget.chatId,
+                      _messageController.text,
+                      widget.email,
+                    );
+                _messageController.clear();
+              },
             ),
           ),
         ],
       ),
     );
-  }
-
-  void _sendMessage() {
-    if (_messageController.text.isNotEmpty) {
-      setState(() {
-        _messages.insert(0, {
-          'sender': 'me',
-          'text': _messageController.text,
-        });
-      });
-      _messageController.clear(); // مسح الرسالة بعد الإرسال
-    }
   }
 }

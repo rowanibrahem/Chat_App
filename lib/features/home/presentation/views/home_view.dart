@@ -15,7 +15,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int selectedIndex = 0;
   final List<Widget> pages = [
-    const ChatView(),
+    const ChatView(), 
     const StatusView(),
     const CallsView(),
   ];

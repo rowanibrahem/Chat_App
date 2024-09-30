@@ -45,6 +45,8 @@ dependencies:
   firebase_storage:
   shimmer: ^3.0.0
   chatview: ^2.2.0
+  intl: ^0.19.0
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
