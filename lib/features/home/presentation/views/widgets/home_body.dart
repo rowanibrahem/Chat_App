@@ -36,7 +36,9 @@ class ChatView extends StatelessWidget {
                 String name = user['name'] ?? 'No name';
                 String phone = user['phone'] ?? 'No phone';
                 String email = user['email'] ?? 'No email';
-
+                if (email == currentEmail) {
+                  return const SizedBox();
+                }
                 return InkWell(
                   onTap: () {
                     String chatId = generateChatIdForUsers(currentEmail, email);
@@ -44,7 +46,7 @@ class ChatView extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ConversationView(
-                          chatId:chatId,
+                          chatId: chatId,
                           email: email,
                           name: name,
                           phone: phone,
@@ -111,14 +113,13 @@ class ChatView extends StatelessWidget {
       ],
     );
   }
-  
+
   String generateChatIdForUsers(String email1, String email2) {
-  // Sort emails to ensure consistent ordering for the chat ID
-  List<String> emails = [email1, email2];
-  emails.sort();
+    // Sort emails to ensure consistent ordering for the chat ID
+    List<String> emails = [email1, email2];
+    emails.sort();
 
-  // Combine the sorted emails to create a unique chat ID
-  return emails.join('_');
-}
-
+    // Combine the sorted emails to create a unique chat ID
+    return emails.join('_');
+  }
 }

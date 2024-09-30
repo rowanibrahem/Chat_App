@@ -1,4 +1,3 @@
-import 'package:chatapp_mentor/features/home/data/model/message_model.dart';
 import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_cubit.dart';
 import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_state.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/chat_view_appbar.dart';
