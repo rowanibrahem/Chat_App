@@ -43,4 +43,39 @@ class ChatCubit extends Cubit<ChatState> {
           );
     }
   }
+
+  void loadGroupMessages(String groupId) {
+    try {
+      emit(LoadGroupMessagesLoading());
+      _chatRepository.getGroupMessages(groupId).listen(
+        (messages) {
+          if (messages.isNotEmpty) {
+            emit(LoadGroupMessagesSuccess(messages));
+          } else {
+            log('No messages found, start a group conversation');
+            emit(const LoadGroupMessagesError(
+                'No messages found, start a group conversation'));
+          }
+        },
+      );
+    } catch (error) {
+      log('error while loading conversation messages: $error');
+      emit(LoadGroupMessagesError(error.toString()));
+    }
+  }
+  
+  void sendGroupMessage(String groupId, String content, String sender) {
+    if (content.isNotEmpty) {
+      emit(SendMessageLoading());
+      final message = Message(
+        sender: sender,
+        content: content,
+        createdAt: DateTime.now(),
+      );
+      _chatRepository.sendGroupMessage(groupId, message).catchError(
+            (error) => emit(SendMessageError(error.toString())),
+          );
+    }
+  }
+
 }

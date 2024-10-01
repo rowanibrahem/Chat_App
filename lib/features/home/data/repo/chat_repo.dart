@@ -18,10 +18,32 @@ class ChatRepository {
     });
   }
 
+  Stream<List<Message>> getGroupMessages(String groupChatId) {
+    return _firestore
+        .collection('groups')
+        .doc(groupChatId)
+        .collection('messages')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Message.fromFirestore(doc.data());
+      }).toList();
+    });
+  }
+
   Future<void> sendMessage(String chatId, Message message) async {
     await _firestore
         .collection('chats')
         .doc(chatId)
+        .collection('messages')
+        .add(message.toFirestore());
+  }
+
+  Future<void> sendGroupMessage(String groupChatId, Message message) async {
+    await _firestore
+        .collection('groups')
+        .doc(groupChatId)
         .collection('messages')
         .add(message.toFirestore());
   }

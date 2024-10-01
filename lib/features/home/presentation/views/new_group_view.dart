@@ -2,6 +2,7 @@ import 'package:chatapp_mentor/core/Routing/routes.dart';
 import 'package:chatapp_mentor/core/shared_widgets/no_image_circle_avatar.dart';
 import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/new_group_app_bar.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/new_group_second_step.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/positioned_next_arrow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -89,9 +90,13 @@ class _NewGroupViewState extends State<NewGroupView> {
           ),
           PositionedNextArrow(
             onPressed: () {
-              Navigator.pushNamed(
+              Navigator.pushReplacement(
                 context,
-                Routes.newGroupSecondStepScreen,
+                MaterialPageRoute(
+                  builder: (context) => NewGroupSecondStep(
+                    selectedUsers: selectedUsers,
+                  ),
+                ),
               );
             },
           ),
