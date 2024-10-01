@@ -1,9 +1,10 @@
+import 'package:chatapp_mentor/features/home/data/chat_api_services/chat_api_services.dart';
 import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_cubit.dart';
 import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_state.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/chat_view_appbar.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/message_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ConversationView extends StatefulWidget {
   const ConversationView({
@@ -29,24 +30,13 @@ class _ConversationViewState extends State<ConversationView> {
     context.read<ChatCubit>().loadMessages(widget.chatId);
   }
 
-  String _formatTimestamp(DateTime dateTime) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final messageDay = DateTime(dateTime.year, dateTime.month, dateTime.day);
-
-    if (messageDay == today) {
-      return DateFormat('hh:mm a').format(dateTime);
-    } else if (messageDay == today.subtract(const Duration(days: 1))) {
-      return 'Yesterday, ${DateFormat('hh:mm a').format(dateTime)}';
-    } else {
-      return DateFormat('MMM d, hh:mm a').format(dateTime);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatViewAppbar(widget: widget),
+      appBar: ChatViewAppbar(
+        widget: widget,
+        title: 'chat view',
+      ),
       body: Column(
         children: [
           Expanded(
@@ -102,7 +92,7 @@ class _ConversationViewState extends State<ConversationView> {
                                   : MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  _formatTimestamp(message.createdAt),
+                                  formatTimestamp(message.createdAt),
                                   style: const TextStyle(
                                       fontSize: 10, color: Colors.grey),
                                 ),
@@ -116,7 +106,8 @@ class _ConversationViewState extends State<ConversationView> {
                 } else if (state is LoadMessagesError) {
                   return Center(
                     child: Text(
-                        'Error occured while fetching messages: ${state.errorMessage}'),
+                      state.errorMessage,
+                    ),
                   );
                 } else if (state is SendMessageLoading) {
                   return const Center(child: CircularProgressIndicator());
@@ -131,46 +122,10 @@ class _ConversationViewState extends State<ConversationView> {
               },
             ),
           ),
-          _buildMessageInput(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMessageInput() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[200],
-                hintText: 'Type a message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          CircleAvatar(
-            backgroundColor: Colors.green,
-            child: IconButton(
-              icon: const Icon(Icons.send, color: Colors.white),
-              onPressed: () {
-                context.read<ChatCubit>().sendMessage(
-                      widget.chatId,
-                      _messageController.text,
-                      widget.email,
-                    );
-                _messageController.clear();
-              },
-            ),
-          ),
+          MessageInput(
+              messageController: _messageController,
+              context: context,
+              widget: widget),
         ],
       ),
     );

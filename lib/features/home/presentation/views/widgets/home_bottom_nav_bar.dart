@@ -42,11 +42,12 @@ class HomeBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.call,
+            Icons.groups,
             color: Colors.green,
+            size: 30,
           ),
-          label: 'Calls',
-          tooltip: 'Calls',
+          label: 'Groups',
+          tooltip: 'Groups',
         ),
       ],
     );

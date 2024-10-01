@@ -1,5 +1,6 @@
 import 'package:chatapp_mentor/core/shared_widgets/no_image_circle_avatar.dart';
 import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:chatapp_mentor/features/home/data/chat_api_services/chat_api_services.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/chat_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_chat_shimmer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,9 +17,8 @@ class ChatView extends StatelessWidget {
           stream: FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const HomeChatShimmer();
+              return const ChatsShimmer();
             }
-
             if (snapshot.hasError) {
               return const Center(child: Text('Something went wrong'));
             }
@@ -70,28 +70,28 @@ class ChatView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    trailing: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text('12:00 PM'),
-                        SizedBox(height: 5),
-                        Expanded(
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.green,
-                            child: Center(
-                              child: Text(
-                                '2',
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // trailing: const Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: [
+                    //     Text('12:00 PM'),
+                    //     SizedBox(height: 5),
+                    //     Expanded(
+                    //       child: CircleAvatar(
+                    //         radius: 12,
+                    //         backgroundColor: Colors.green,
+                    //         child: Center(
+                    //           child: Text(
+                    //             '2',
+                    //             maxLines: 1,
+                    //             style: TextStyle(
+                    //                 color: Colors.white, fontSize: 12),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                 );
               },
@@ -112,14 +112,5 @@ class ChatView extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String generateChatIdForUsers(String email1, String email2) {
-    // Sort emails to ensure consistent ordering for the chat ID
-    List<String> emails = [email1, email2];
-    emails.sort();
-
-    // Combine the sorted emails to create a unique chat ID
-    return emails.join('_');
   }
 }

@@ -44,9 +44,6 @@ class AppRouter {
       case Routes.newGroupScreen:
         return MaterialPageRoute(
             builder: (_) => const NewGroupView());
-      case Routes.newGroupSecondStepScreen:
-        return MaterialPageRoute(
-            builder: (_) => const NewGroupSecondStep());
       default:
         return MaterialPageRoute(
             builder: (_) =>

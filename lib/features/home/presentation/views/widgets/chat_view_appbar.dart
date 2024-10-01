@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ChatViewAppbar extends StatelessWidget implements PreferredSizeWidget {
   const ChatViewAppbar({
     super.key,
-    required this.widget,
+    required this.widget, required String title,
   });
 
   final ConversationView widget;

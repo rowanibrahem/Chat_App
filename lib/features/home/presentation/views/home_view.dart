@@ -1,4 +1,4 @@
-import 'package:chatapp_mentor/features/calls/presentation/views/calls_view.dart';
+import 'package:chatapp_mentor/features/groups/presentation/views/groups_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_body.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_bottom_nav_bar.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_view_appbar.dart';
@@ -15,9 +15,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int selectedIndex = 0;
   final List<Widget> pages = [
-    const ChatView(), 
+    const ChatView(),
     const StatusView(),
-    const CallsView(),
+    const GroupsView(),
   ];
   @override
   Widget build(BuildContext context) {
