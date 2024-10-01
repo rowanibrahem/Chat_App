@@ -1,7 +1,7 @@
 import 'package:chatapp_mentor/core/shared_widgets/no_image_circle_avatar.dart';
 import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
 import 'package:chatapp_mentor/features/home/data/chat_api_services/chat_api_services.dart';
-import 'package:chatapp_mentor/features/home/presentation/views/chat_view.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/conversation_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_chat_shimmer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

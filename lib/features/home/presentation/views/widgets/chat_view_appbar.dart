@@ -1,4 +1,4 @@
-import 'package:chatapp_mentor/features/home/presentation/views/chat_view.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/conversation_view.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewAppbar extends StatelessWidget implements PreferredSizeWidget {

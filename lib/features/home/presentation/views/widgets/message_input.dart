@@ -1,5 +1,5 @@
 import 'package:chatapp_mentor/features/home/presentation/manager/cubit/chat_cubit.dart';
-import 'package:chatapp_mentor/features/home/presentation/views/chat_view.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/conversation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

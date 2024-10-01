@@ -6,7 +6,7 @@ import 'package:chatapp_mentor/features/auth/presentation/views/signup_view.dart
 import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/new_group_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/profile_view.dart';
-import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_body.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/chat_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/new_group_second_step.dart';
 import 'package:chatapp_mentor/features/splash_screen/presentation/views/splash_view.dart';
 import 'package:flutter/material.dart';

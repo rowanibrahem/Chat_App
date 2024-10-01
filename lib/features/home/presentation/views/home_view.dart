@@ -1,5 +1,5 @@
 import 'package:chatapp_mentor/features/groups/presentation/views/groups_view.dart';
-import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_body.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/widgets/chat_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_bottom_nav_bar.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/widgets/home_view_appbar.dart';
 import 'package:chatapp_mentor/features/status/presentation/views/status_view.dart';
