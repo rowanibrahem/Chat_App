@@ -1,10 +1,12 @@
+import 'package:chatapp_mentor/core/Routing/routes.dart';
 import 'package:chatapp_mentor/core/constants/asset_images.dart';
 import 'package:chatapp_mentor/core/shared_widgets/custom_button.dart';
 import 'package:chatapp_mentor/core/shared_widgets/dafault_text.dart';
 import 'package:chatapp_mentor/core/themes/styles.dart';
-import 'package:chatapp_mentor/features/auth/presentation/views/login_view.dart';
-import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupBody extends StatefulWidget {
@@ -27,6 +29,26 @@ var formKey = GlobalKey<FormState>();
 class _SignupBodyState extends State<SignupBody> {
   @override
   Widget build(BuildContext context) {
+
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is RegisterSuccessState) {
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.homeScreen,
+          );
+        } else if (state is RegisterFailureState) {
+          displayToastMssg(state.errorMessage ?? 'error occured', context);
+        }
+      },
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Center(
@@ -163,51 +185,37 @@ class _SignupBodyState extends State<SignupBody> {
                   }
                   ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already have an account ?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginView(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
                           ),
-                        );
-                      },
-                      child: const Text(
-                        'Login here',
-                      ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.loginScreen,
+                            );
+                          },
+                          child: const Text('Login here'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   displayToastMssg(String msg, BuildContext context) {
     Fluttertoast.showToast(msg: msg);
-  }
-
-  SnackBar customSnackBar({required String message}) {
-    return SnackBar(
-      content: Container(
-          alignment: Alignment.center,
-          height: 40,
-          child: Text(
-            message,
-            style: const TextStyle(fontSize: 16),
-          )),
-    );
   }
 }

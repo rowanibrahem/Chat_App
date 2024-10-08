@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -20,25 +23,42 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.chatapp_mentor"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdkVersion 23 // You can update this as per your app's requirement
+        targetSdkVersion 33 // Update this according to the latest SDK version you're using
+        versionCode 1 // Set the version code
+        versionName "1.0.0" // Set the version name
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+        }
+    }
+
+    configurations {
+        all {
+            resolutionStrategy {
+                // Force specific Kotlin versions to avoid duplicate classes
+                force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+            }
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Ensure all your required dependencies are here.
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
+
+    // Add Firebase and other relevant dependencies, for example:
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Remove any unnecessary dependencies.
 }

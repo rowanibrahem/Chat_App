@@ -1,3 +1,14 @@
+import 'package:chatapp_mentor/core/Routing/routes.dart';
+import 'package:chatapp_mentor/core/constants/asset_images.dart';
+import 'package:chatapp_mentor/core/shared_widgets/custom_button.dart';
+import 'package:chatapp_mentor/core/shared_widgets/dafault_text.dart';
+import 'package:chatapp_mentor/core/themes/styles.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:chatapp_mentor/features/auth/presentation/views/widgets/email_feild.dart';
 import 'package:chatapp_mentor/features/auth/presentation/views/widgets/login_button.dart';
 import 'package:chatapp_mentor/features/auth/presentation/views/widgets/login_title.dart';
@@ -6,6 +17,11 @@ import 'package:chatapp_mentor/features/auth/presentation/views/widgets/password
 import 'package:chatapp_mentor/features/auth/presentation/views/widgets/register_row.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:chatapp_mentor/core/Routing/routes.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -18,14 +34,24 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 
 bool isPasswordVisible = false;
-bool? currentValue;
-
 var formKey = GlobalKey<FormState>();
 
 class _LoginBodyState extends State<LoginBody> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is LoginSuccessState) {
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.homeScreen,
+          );
+        } else if (state is LoginFailureState) {
+          displayToastMssg(state.errorMessage ?? "error occured", context);
+        }
+      },
+      builder: (context, state) {
+        return  Padding(
       padding: const EdgeInsets.all(20.0),
       child: Center(
         child: Form(
@@ -65,11 +91,17 @@ class _LoginBodyState extends State<LoginBody> {
                 const SizedBox(height: 20),
                 const RegisterRow(),
               ],
+
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+
+  displayToastMssg(String msg, BuildContext context) {
+    Fluttertoast.showToast(msg: msg);
   }
 
   
