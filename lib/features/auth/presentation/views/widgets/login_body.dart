@@ -9,6 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/email_feild.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/login_button.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/login_title.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/logo.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/password_feild.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/widgets/register_row.dart';
+import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
+import 'package:flutter/material.dart';
+import 'package:chatapp_mentor/core/Routing/routes.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:chatapp_mentor/features/auth/presentation/managers/auth_cubit/auth_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
 
@@ -37,110 +51,47 @@ class _LoginBodyState extends State<LoginBody> {
         }
       },
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: Form(
-              key: formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: Image.asset(
-                        AssetImages.logo,
-                        width: 300,
-                        height: 250,
-                      ),
-                    ),
-                    Text(
-                      'Log in to your account',
-                      style: Styles.textStyle24,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    defaultText(
-                      type: TextInputType.emailAddress,
-                      controller: emailController,
-                      label: 'enter your email',
-                      hint: 'your email',
-                      prefix: Icons.email,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email must not be empty';
-                        }
-                        return null;
-                      },
-                      onChange: (value) {
-                        print(value);
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    defaultText(
-                      type: TextInputType.visiblePassword,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'password is too short';
-                        }
-                        return null;
-                      },
-                      controller: passwordController,
-                      hint: 'Password',
-                      label: 'enter your password',
-                      prefix: Icons.lock,
-                      suffix: isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      pressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                      onChange: (value) {
-                        print(value);
-                      },
-                      isObscure: !isPasswordVisible,
-                    ),
-                    const SizedBox(height: 20.0),
-                    if (state is LoginLoadingState)
-                      const CircularProgressIndicator()
-                    else CustomButton(
-                            text: 'Log In',
-                            func: () {
-                              if (formKey.currentState!.validate()) {
-                                BlocProvider.of<AuthCubit>(context).logIn(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                );
-                              }
-                            },
-                          ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Don\'t have an account?',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.signUpScreen,
-                            );
-                          },
-                          child: Text(
-                            'Register here',
-                            style: Styles.textStyle10,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+        return  Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Center(
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const LogoWidget(),
+                const SizedBox(height: 20),
+                const LoginTitle(),
+                const SizedBox(height: 20),
+                EmailField(emailController: emailController),
+                const SizedBox(height: 15),
+                PasswordField(
+                  passwordController: passwordController,
+                  isPasswordVisible: isPasswordVisible,
+                  toggleVisibility: () {
+                    setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    });
+                  },
                 ),
-              ),
+                const SizedBox(height: 20),
+                LoginButton(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  onSuccess: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeView(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const RegisterRow(),
+              ],
+
             ),
           ),
         );
@@ -148,9 +99,12 @@ class _LoginBodyState extends State<LoginBody> {
     );
   }
 
+
   displayToastMssg(String msg, BuildContext context) {
     Fluttertoast.showToast(msg: msg);
   }
+
+  
 
   SnackBar customSnackBar({required String message}) {
     return SnackBar(
