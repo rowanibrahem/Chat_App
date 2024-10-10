@@ -1,4 +1,4 @@
-import 'package:chatapp_mentor/features/auth/presentation/views/widgets/login_body.dart';
+import 'package:chatapp_mentor/features/auth_old/presentation/views/widgets/login_body.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -8,7 +8,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child:  Scaffold(
-        body: LoginBody(),
+        body:  LoginBody(),
       ),
     );
   }

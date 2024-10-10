@@ -1,5 +1,5 @@
 import 'package:chatapp_mentor/core/themes/styles.dart';
-import 'package:chatapp_mentor/features/auth/presentation/views/signup_view.dart';
+import 'package:chatapp_mentor/features/auth_old/presentation/views/signup_view.dart';
 import 'package:flutter/material.dart';
 
 class RegisterRow extends StatelessWidget {

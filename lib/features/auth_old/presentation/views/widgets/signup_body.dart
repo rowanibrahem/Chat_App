@@ -2,7 +2,7 @@ import 'package:chatapp_mentor/core/constants/asset_images.dart';
 import 'package:chatapp_mentor/core/shared_widgets/custom_button.dart';
 import 'package:chatapp_mentor/core/shared_widgets/dafault_text.dart';
 import 'package:chatapp_mentor/core/themes/styles.dart';
-import 'package:chatapp_mentor/features/auth/presentation/views/login_view.dart';
+import 'package:chatapp_mentor/features/auth_old/presentation/views/login_view.dart';
 import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
