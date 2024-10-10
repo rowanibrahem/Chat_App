@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
-      home: const HomeView(), //const SplashView(),
+      home: const HomeView(), 
     );
   }
 }
