@@ -1,4 +1,4 @@
-import 'package:chatapp_mentor/features/home/presentation/views/home_view.dart';
+import 'package:chatapp_mentor/features/auth/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
-      home: const HomeView(), 
+      home: const LoginView(),
     );
   }
 }
